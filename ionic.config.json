@@ -1,0 +1,7 @@
+{
+  "name": "buscar-cep",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

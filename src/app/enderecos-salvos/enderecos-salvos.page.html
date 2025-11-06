@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Meus Endereços Salvos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Mensagem de lista vazia -->
+  @if (savedAddresses.length === 0) {
+    <div class="ion-text-center ion-padding-top">
+      <ion-icon name="map-outline" size="large" color="medium"></ion-icon>
+      <p>Você não possui nenhum endereço salvo.</p>
+      <ion-button routerLink="/buscar-endereco">Buscar e Salvar Endereço</ion-button>
+    </div>
+  }
+
+  <!-- Lista de Endereços Salvos -->
+  @if (savedAddresses.length > 0) {
+    <ion-list lines="full">
+      
+      <!-- Loop sobre a lista de endereços -->
+      @for (address of savedAddresses; track address.id) {
+        <ion-item-sliding>
+          
+          <!-- Opções de Ação (Aparece ao deslizar para a esquerda) -->
+          <ion-item-options slot="end">
+            <ion-item-option color="danger" (click)="confirmDelete(address)">
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+
+          <!-- Conteúdo do Item -->
+          <ion-item>
+            <ion-icon name="location-outline" slot="start" color="primary"></ion-icon>
+            <ion-label>
+              <!-- Endereço principal -->
+              <h2>{{ address.logradouro || 'Endereço sem rua' }}</h2>
+              <!-- Complemento e Cidade/UF -->
+              <p>{{ address.bairro }} — {{ address.localidade }} / {{ address.uf }}</p>
+            </ion-label>
+            <ion-note slot="end">{{ address.cep }}</ion-note>
+          </ion-item>
+          
+        </ion-item-sliding>
+      }
+    </ion-list>
+  }
+
+</ion-content>

@@ -1,0 +1,122 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Meu Perfil</ion-title>
+    <!-- Botão de Edição no canto superior direito -->
+    <ion-buttons slot="end">
+      <ion-button color="" (click)="toggleEditMode()">
+        <ion-icon [name]="isEditing ? 'close-outline' : 'create-outline'" slot="start"></ion-icon>
+        {{ isEditing ? 'Cancelar' : 'Editar' }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="ion-padding max-w-lg mx-auto">
+    <!-- Card Principal -->
+    <ion-card class="shadow-lg rounded-xl overflow-hidden mt-4">
+      <ion-card-header class="bg-gray-100 p-4">
+        <div class="flex flex-col items-center">
+          <ion-icon name="person-circle-outline" size="large" color="medium"></ion-icon>
+          <ion-card-title class="text-xl font-semibold mt-2">{{ currentUserName }}</ion-card-title>
+        </div>
+      </ion-card-header>
+
+      <ion-card-content class="p-4">
+        
+        <!-- INFORMAÇÕES PESSOAIS -->
+        <ion-item-divider class="mt-4 mb-2">
+          <ion-label class="text-xs font-bold text-gray-500 tracking-wider">INFORMAÇÕES PESSOAIS</ion-label>
+        </ion-item-divider>
+
+        <!-- Nome do Usuário -->
+        <ion-item lines="full" class="py-1">
+          <ion-label position="stacked" class="text-sm font-medium text-gray-700">Nome</ion-label>
+          <ion-input 
+            type="text" 
+            [readonly]="!isEditing"
+            [color]="isEditing ? 'primary' : 'medium'"
+            [(ngModel)]="newUserName" 
+          ></ion-input>
+        </ion-item>
+
+        <!-- E-mail (BLOQUEADO) -->
+        <ion-item lines="full" class="py-1">
+          <ion-label position="stacked" class="text-sm font-medium text-gray-700">E-mail</ion-label>
+          <ion-input 
+            type="email" 
+            [value]="userEmail || 'N/A'" 
+            readonly 
+            color="medium"
+          ></ion-input>
+        </ion-item>
+
+        <!-- 💡 SALVAR NOME - BOTÃO CONDICIONAL -->
+        @if (isEditing) {
+          <div class="ion-padding-top">
+            <ion-button 
+              expand="block" 
+              color="success" 
+              (click)="updateUserName()"
+              class="rounded-lg shadow-sm"
+            >
+              SALVAR NOVO NOME
+            </ion-button>
+          </div>
+        }
+        <!-- Campos de Senha - Visíveis SOMENTE em modo de edição -->
+        @if (isEditing) {
+          <ion-item lines="full" class="py-1">
+            <ion-label position="stacked" class="text-sm font-medium text-gray-700">Nova Senha (min. 6 caracteres)</ion-label>
+            <ion-input 
+              type="password" 
+              [(ngModel)]="newPassword"
+              color="primary"
+            ></ion-input>
+          </ion-item>
+          
+          <ion-item lines="full" class="py-1">
+            <ion-label position="stacked" class="text-sm font-medium text-gray-700">Confirmar Nova Senha</ion-label>
+            <ion-input 
+              type="password" 
+              [(ngModel)]="confirmPassword"
+              color="primary"
+            ></ion-input>
+          </ion-item>
+          
+          <!-- 💡 SALVAR SENHA - BOTÃO CONDICIONAL -->
+          <div class="ion-padding-top">
+            <ion-button 
+              expand="block" 
+              color="warning" 
+              (click)="updatePasswordInPlace()" 
+              [disabled]="!newPassword || newPassword !== confirmPassword"
+              class="rounded-lg shadow-sm"
+            >
+              SALVAR NOVA SENHA
+            </ion-button>
+          </div>
+        }
+        
+        <!-- REMOVIDO: MEUS ENDEREÇOS SALVOS -->
+        <!-- REMOVIDO: Link para endereços salvos -->
+
+        <!-- SAIR DA CONTA (LOGOUT) -->
+        <div class="ion-padding-top mt-8">
+          <ion-button 
+            expand="block" 
+            color="danger" 
+            (click)="logout()" 
+            class="rounded-lg shadow-lg"
+          >
+            SAIR DA CONTA (LOGOUT)
+          </ion-button>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

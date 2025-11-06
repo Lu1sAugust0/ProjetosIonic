@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Criar Conta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  
+  <form (ngSubmit)="registerUser()">
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Nome Completo</ion-label>
+      <ion-input 
+        type="text" 
+        [(ngModel)]="name" 
+        name="name" 
+        required
+      ></ion-input>
+    </ion-item>
+    
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">E-mail</ion-label>
+      <ion-input 
+        type="email" 
+        [(ngModel)]="email" 
+        name="email" 
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Senha</ion-label>
+      <ion-input 
+        type="password" 
+        [(ngModel)]="password" 
+        name="password" 
+        minlength="6"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-label position="floating">Confirmar Senha</ion-label>
+      <ion-input 
+        type="password" 
+        [(ngModel)]="passwordConfirm" 
+        name="passwordConfirm" 
+        minlength="6"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-button 
+      expand="full" 
+      type="submit" 
+      class="ion-margin-top"
+      [disabled]="!email || !password || !passwordConfirm"
+    >
+      Cadastrar
+    </ion-button>
+    
+    <ion-button expand="full" fill="clear" routerLink="/login">
+      Já tenho conta
+    </ion-button>
+
+  </form>
+</ion-content>
