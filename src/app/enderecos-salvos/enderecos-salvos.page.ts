@@ -80,9 +80,6 @@ export class EnderecosSalvosPage implements OnInit, OnDestroy {
   private router: Router = inject(Router);
 
   constructor() {
-    // Adicionando ícones do Ionicons
-    // import { addIcons } from 'ionicons';
-    // addIcons({ trashOutline }); // Exemplo, se necessário importar manualmente
   }
   
   ngOnInit() {
@@ -90,10 +87,9 @@ export class EnderecosSalvosPage implements OnInit, OnDestroy {
     this.authSubscription = user(this.auth).subscribe(firebaseUser => {
       if (firebaseUser) {
         this.userId = firebaseUser.uid;
-        this.loadSavedAddresses(); // 2. Se logado, carrega os endereços
+        this.loadSavedAddresses();
       } else {
-        this.savedAddresses = []; // Se deslogado, limpa a lista
-        // Nota: O authGuard já deveria proteger contra isso.
+        this.savedAddresses = [];
       }
     });
   }

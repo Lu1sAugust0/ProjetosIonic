@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core'; // 👈 Adiciona OnInit e OnDestroy
+import { Component, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { 
@@ -21,10 +21,10 @@ import {
   IonSpinner
 } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
-// 🚀 INCLUSÃO dos imports do Firebase e RxJS 🚀
+//  INCLUSÃO dos imports do Firebase e RxJS 
 import { Auth, user } from '@angular/fire/auth'; 
 import { Firestore, collection, addDoc } from '@angular/fire/firestore'; 
-import { lastValueFrom, Subscription } from 'rxjs'; // 👈 Adiciona Subscription
+import { lastValueFrom, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-buscar-endereco',
@@ -52,27 +52,25 @@ import { lastValueFrom, Subscription } from 'rxjs'; // 👈 Adiciona Subscriptio
     IonSpinner
   ]
 })
-// 👈 Implementa OnInit e OnDestroy
+
 export class BuscarEnderecoPage implements OnInit, OnDestroy { 
 
   cep: string = '';
   endereco: any | null = null; // Alterado para 'any' para flexibilidade com o ViaCEP
   isLoading: boolean = false;
   
-  // 🚀 NOVAS PROPRIEDADES 🚀
   private userId: string | null = null;
   private authSubscription: Subscription | null = null;
   
   private alertController: AlertController = inject(AlertController);
   private router: Router = inject(Router);
-  // 🚀 INJEÇÃO dos serviços Firebase 🚀
+  // INJEÇÃO dos serviços Firebase
   private auth: Auth = inject(Auth); 
   private firestore: Firestore = inject(Firestore); 
-  // O NgZone não é mais necessário aqui.
 
   constructor() { }
   
-  // 🚀 LÓGICA DE AUTENTICAÇÃO MOVIDA PARA ngOnInit 🚀
+  //  LÓGICA DE AUTENTICAÇÃO MOVIDA PARA ngOnInit  
   ngOnInit(): void {
     // Assina o Observable 'user' do AngularFire para obter o estado de autenticação uma vez
     this.authSubscription = user(this.auth).subscribe(firebaseUser => {
@@ -82,8 +80,6 @@ export class BuscarEnderecoPage implements OnInit, OnDestroy {
         console.log('User ID obtido corretamente no ngOnInit:', this.userId);
       } else {
         this.userId = null;
-        // Opcional: Redirecionar, mas o AuthGuard já faz isso nas rotas
-        // this.router.navigateByUrl('/login');
       }
     });
   }
@@ -154,7 +150,7 @@ export class BuscarEnderecoPage implements OnInit, OnDestroy {
   async saveAddress() {
     if (!this.endereco) return;
     
-    // 🚀 MUDANÇA PRINCIPAL: Usamos o userId que foi pré-carregado no ngOnInit 🚀
+    // MUDANÇA PRINCIPAL: Usamos o userId que foi pré-carregado no ngOnInit 
     if (!this.userId) {
       this.presentAlert('Erro de Autenticação', 'Você precisa estar logado para salvar endereços. Redirecionando...');
       this.router.navigateByUrl('/login');
@@ -162,8 +158,6 @@ export class BuscarEnderecoPage implements OnInit, OnDestroy {
     }
 
     try {
-      // Cria a referência à subcoleção: users/{userId}/savedAddresses
-      // Usamos this.userId em vez de buscar o usuário novamente
       const addressesCollection = collection(this.firestore, `users/${this.userId}/savedAddresses`);
       
       // Objeto a ser salvo (filtramos os dados do ViaCEP)

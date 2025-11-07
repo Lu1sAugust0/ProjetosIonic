@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './auth/auth.guard'; // 👈 1. Importação do Guardião
+import { authGuard } from './auth/auth.guard'; // 1. Importação do Guardião
 
 export const routes: Routes = [
   // Rota de Login (Acessível a todos)
@@ -17,7 +17,7 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => import('./home/home.page').then(m => m.HomePage),
-    canActivate: [authGuard] // 👈 2. Aplicação do Guardião
+    canActivate: [authGuard] // 2. Aplicação do Guardião
   },
   
   // NOVAS ROTAS PROTEGIDAS (Adicionamos aqui para que a Home Page carregue)

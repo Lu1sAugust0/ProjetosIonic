@@ -13,7 +13,7 @@ import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  // 💡 Importe todos os componentes Ionic usados no template, e o FormsModule!
+  // Importe todos os componentes Ionic usados no template, e o FormsModule!
   imports: [
     CommonModule, 
     FormsModule, 
@@ -50,7 +50,7 @@ export class LoginPage {
       
       console.log('Login efetuado com sucesso:', userCredential.user);
       
-      // 🚀 Sucesso: Redireciona para a página principal
+      // Sucesso: Redireciona para a página principal
       this.router.navigateByUrl('/home', { replaceUrl: true }); 
 
     } catch (error: any) {

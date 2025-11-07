@@ -22,7 +22,7 @@ import {
   IonNote,
   IonItemDivider
 } from '@ionic/angular/standalone';
-// 🚀 Imports adicionais para autenticação e Firestore
+// Imports adicionais para autenticação e Firestore
 import { Auth, user, signOut, updateProfile, updatePassword } from '@angular/fire/auth'; 
 import { Firestore, doc, getDoc, updateDoc } from '@angular/fire/firestore'; // <<< Adicionado updateDoc
 import { Subscription } from 'rxjs';
@@ -174,12 +174,11 @@ export class ProfilePage implements OnInit, OnDestroy {
       // 1. Atualiza o displayName no Firebase Auth
       await updateProfile(firebaseUser, { displayName: trimmedName });
       
-      // 2. 🚀 NOVO: Atualiza o campo 'name' no documento do Firestore (/users/{userId})
+      // 2. NOVO: Atualiza o campo 'name' no documento do Firestore (/users/{userId})
       const userDocRef = doc(this.firestore, 'users', firebaseUser.uid);
       await updateDoc(userDocRef, {
         name: trimmedName // Atualiza o campo 'name' no Firestore
       });
-      // 🚀 FIM NOVO 🚀
       
       this.currentUserName = trimmedName;
       this.newUserName = trimmedName;

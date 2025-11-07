@@ -47,7 +47,7 @@ export class RegisterPage {
   name = '';
   email = '';
   password = '';
-  passwordConfirm = ''; // 💡 VARIÁVEL ADICIONADA PARA O CAMPO DE CONFIRMAÇÃO
+  passwordConfirm = ''; // VARIÁVEL ADICIONADA PARA O CAMPO DE CONFIRMAÇÃO
 
   // Injeção dos serviços
   private auth: Auth = inject(Auth);
@@ -91,7 +91,7 @@ export class RegisterPage {
     }
     
     try {
-      // 🚀 Chamada para criar o usuário no Firebase
+      // Chamada para criar o usuário no Firebase
       const userCredential = await createUserWithEmailAndPassword(
         this.auth, 
         this.email, 
@@ -99,7 +99,6 @@ export class RegisterPage {
       );
 
 
-      // 🌟 NOVO: SALVANDO O NOME NO FIRESTORE 🌟
       const userId = userCredential.user.uid;
       const userDocRef = doc(this.firestore, 'users', userId); // Ref para o documento 'users/UID_DO_USUARIO'
       
