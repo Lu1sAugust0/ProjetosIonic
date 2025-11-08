@@ -21,7 +21,14 @@
       Entrar
     </ion-button>
 
-    <ion-button expand="full" fill="clear" routerLink="/register">
+    <!-- NOVO: Botão Esqueci a Senha -->
+    <div class="ion-text-center">
+      <ion-button fill="clear" color="medium" size="small" (click)="forgotPassword()">
+        Esqueceu sua senha?
+      </ion-button>
+    </div>
+    
+    <ion-button expand="full" fill="clear" routerLink="/register" class="ion-margin-top">
       Não tem conta? Cadastre-se
     </ion-button>
     
