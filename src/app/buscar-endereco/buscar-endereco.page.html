@@ -1,85 +1,126 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <!-- Botão para voltar à página Home -->
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
     <ion-title>Buscar Endereço</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content [fullscreen]="true" class="ion-padding">
 
-  <!-- Formulário de Busca por CEP -->
+  <!-- Card de Busca de CEP -->
   <ion-card class="ion-margin-bottom">
     <ion-card-header>
       <ion-card-title>Digite o CEP</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-item lines="full">
-        <ion-label position="floating">CEP (somente números)</ion-label>
-        <!-- [(ngModel)]="cep" e (ionInput) para formatar o CEP -->
-        <ion-input 
-          type="tel" 
-          [(ngModel)]="cep" 
-          (ionInput)="formatCep()" 
-          maxlength="8" 
-          inputmode="numeric" 
+      <ion-item>
+        <ion-label position="stacked">CEP (somente números)</ion-label>
+        <ion-input
+          type="tel"
+          maxlength="8"
+          placeholder="Ex: 23015030"
+          [(ngModel)]="cep"
+          (keyup.enter)="searchCep()"
           [disabled]="isLoading"
         ></ion-input>
       </ion-item>
 
       <ion-button 
-        expand="full" 
+        expand="block" 
         class="ion-margin-top"
-        (click)="searchCep()"
+        (click)="searchCep()" 
         [disabled]="cep.length !== 8 || isLoading"
+        color="secondary"
       >
-        <!-- Ícone de carregamento condicional -->
-        <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
-        <span *ngIf="!isLoading">Buscar</span>
+        <ion-icon name="search-outline" slot="start"></ion-icon>
+        BUSCAR CEP
       </ion-button>
     </ion-card-content>
   </ion-card>
 
-  <!-- 3. Exibição dos Resultados -->
-  @if (endereco && !isLoading) {
-    <ion-card color="success">
-      <ion-card-header>
-        <ion-card-title class="ion-text-center">Endereço Encontrado!</ion-card-title>
-      </ion-card-header>
+  <!-- Loading Indicator -->
+  <ion-loading [isOpen]="isLoading" message="Buscando endereço e coordenadas..."></ion-loading>
+
+  <!-- Card de Resultado (Endereço Encontrado) -->
+  <ion-card *ngIf="address">
+    <ion-card-header [color]="coordinates ? 'success' : 'warning'">
+      <ion-card-title class="ion-text-center">
+        Endereço Encontrado!
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content class="ion-padding-top">
       
-      <ion-card-content>
-        <ion-list lines="none">
-          <ion-item>
-            <ion-label>CEP:</ion-label>
-            <ion-label slot="end" class="ion-text-wrap">{{ endereco.cep }}</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>Rua:</ion-label>
-            <ion-label slot="end" class="ion-text-wrap">{{ endereco.logradouro }}</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>Bairro:</ion-label>
-            <ion-label slot="end" class="ion-text-wrap">{{ endereco.bairro }}</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>Cidade/UF:</ion-label>
-            <ion-label slot="end" class="ion-text-wrap">{{ endereco.localidade }} / {{ endereco.uf }}</ion-label>
-          </ion-item>
-        </ion-list>
-        
-        <!-- Botão para Salvar -->
-        <ion-button 
-          expand="full" 
-          color="dark" 
-          class="ion-margin-top"
-          (click)="saveAddress()"
-        >
-          Salvar Endereço
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
-  }
+      <!-- Detalhes do Endereço -->
+      <ion-item lines="none">
+        <ion-label>CEP:</ion-label>
+        <ion-text slot="end">{{ address.cep | slice:0:5 }}-{{ address.cep | slice:5 }}</ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Rua:</ion-label>
+        <ion-text slot="end">{{ address.logradouro }}</ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Bairro:</ion-label>
+        <ion-text slot="end">{{ address.bairro }}</ion-text>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label>Cidade/UF:</ion-label>
+        <ion-text slot="end">{{ address.localidade }} / {{ address.uf }}</ion-text>
+      </ion-item>
+
+      <ion-item-divider class="ion-margin-top" [color]="coordinates ? 'success' : 'medium'"></ion-item-divider>
+
+      <!-- Detalhes das Coordenadas -->
+      <ion-card-title class="ion-text-center ion-padding-top ion-padding-bottom">
+        <ion-icon name="location-outline" color="dark"></ion-icon>
+        Geolocalização
+      </ion-card-title>
+
+      <!-- Exibição de Coordenadas Encontradas -->
+      <div *ngIf="coordinates">
+        <ion-item lines="none">
+          <ion-label>Latitude:</ion-label>
+          <ion-text slot="end">{{ coordinates.latitude }}</ion-text>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>Longitude:</ion-label>
+          <ion-text slot="end">{{ coordinates.longitude }}</ion-text>
+        </ion-item>
+      </div>
+
+      <!-- Exibição de Erro de Geocoding (se aplicável) -->
+      <div *ngIf="geocodingError">
+        <ion-text color="danger">
+          <p class="ion-text-center ion-margin-top">
+            Atenção: {{ geocodingError }}
+          </p>
+        </ion-text>
+      </div>
+      
+      <!-- Botão para Salvar Endereço (Firestore) -->
+      <ion-button 
+        expand="block" 
+        class="ion-margin-top" 
+        (click)="saveAddress()"
+        color="dark"
+        [disabled]="isLoading"
+      >
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        SALVAR ENDEREÇO
+      </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Mensagem de erro de CEP não encontrado -->
+  <ion-card *ngIf="address === null && !isLoading && cep.length === 8">
+    <ion-card-header color="danger">
+      <ion-card-title class="ion-text-center">
+        CEP Não Encontrado
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
 
 </ion-content>

@@ -37,5 +37,17 @@
 
     <!-- Permissions -->
 
+    <!-- PERMISSÃO ESSENCIAL: Permite que o app acesse a internet -->
     <uses-permission android:name="android.permission.INTERNET" />
+    
+    <!-- PERMISSÕES DE LOCALIZAÇÃO: Essenciais para o Capacitor Geolocation/Geocoding -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    
+    <!-- RECURSO DE HARDWARE: Indica que o app usa a funcionalidade de localização do dispositivo -->
+    <uses-feature android:name="android.hardware.location.gps" />
+
+    <!-- PERMISSÃO DE ARMAZENAMENTO: Necessário para salvar arquivos de texto em dispositivos Android mais antigos. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 </manifest>

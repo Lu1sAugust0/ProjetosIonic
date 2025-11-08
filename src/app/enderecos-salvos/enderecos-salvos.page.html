@@ -4,6 +4,9 @@
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
     <ion-title>Meus Endereços Salvos</ion-title>
+    
+    <!-- O botão de Exportar Geral foi removido daqui, focando na exportação individual por item. -->
+    
   </ion-toolbar>
 </ion-header>
 
@@ -13,7 +16,7 @@
   @if (savedAddresses.length === 0) {
     <div class="ion-text-center ion-padding-top">
       <ion-icon name="map-outline" size="large" color="medium"></ion-icon>
-      <p>Você não possui nenhum endereço salvo.</p>
+      <p class="ion-padding-top">Você não possui nenhum endereço salvo.</p>
       <ion-button routerLink="/buscar-endereco">Buscar e Salvar Endereço</ion-button>
     </div>
   }
@@ -24,28 +27,47 @@
       
       <!-- Loop sobre a lista de endereços -->
       @for (address of savedAddresses; track address.id) {
+        
+        <!-- 🌟 Item Sliding para a ação de arrastar (Swipe-to-Action) 🌟 -->
         <ion-item-sliding>
           
-          <!-- Opções de Ação (Aparece ao deslizar para a esquerda) -->
-          <ion-item-options slot="end">
-            <ion-item-option color="danger" (click)="confirmDelete(address)">
-              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          <!-- Opção de Exportar (Aparece ao deslizar para a DIREITA - slot="start") -->
+          <!-- 🚨 CORREÇÃO: Usando slot="start" E side="start" para garantir que o deslize para a direita funcione. -->
+          <ion-item-options slot="start" side="start">
+            <!-- 🚨 ESTE BOTÃO CHAMA A FUNÇÃO DE EXPORTAÇÃO 🚨 -->
+            <ion-item-option color="secondary" (click)="exportSingleAddressToTxt(address)">
+              <!-- Ícone de Compartilhar/Salvar -->
+              <ion-icon slot="icon-only" name="share-outline"></ion-icon>
             </ion-item-option>
           </ion-item-options>
 
-          <!-- Conteúdo do Item -->
-          <ion-item>
+          <!-- Opções de Ação (Aparece ao deslizar para a ESQUERDA - slot="end") -->
+          <!-- Adicionando side="end" por consistência, mesmo que já funcionasse -->
+          <ion-item-options slot="end" side="end">
+            <ion-item-option color="danger" (click)="confirmDelete(address)">
+              <!-- Ícone de Excluir -->
+              <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+          
+          <!-- Conteúdo do Item que desliza -->
+          <ion-item detail="false">
             <ion-icon name="location-outline" slot="start" color="primary"></ion-icon>
-            <ion-label>
+            
+            <ion-label class="ion-text-wrap">
               <!-- Endereço principal -->
               <h2>{{ address.logradouro || 'Endereço sem rua' }}</h2>
               <!-- Complemento e Cidade/UF -->
               <p>{{ address.bairro }} — {{ address.localidade }} / {{ address.uf }}</p>
             </ion-label>
-            <ion-note slot="end">{{ address.cep }}</ion-note>
+            
+            <!-- Informação do CEP -->
+            <ion-note slot="end" class="ion-text-wrap">{{ address.cep }}</ion-note>
+            
           </ion-item>
           
         </ion-item-sliding>
+        
       }
     </ion-list>
   }
