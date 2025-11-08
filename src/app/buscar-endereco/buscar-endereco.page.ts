@@ -31,15 +31,11 @@ import { Firestore, collection, addDoc } from '@angular/fire/firestore';
 import { Auth, user } from '@angular/fire/auth';
 import { firstValueFrom } from 'rxjs';
 
-// Importações de Plugins Capacitor (mantemos Geolocation, mas NÃO usaremos .geocode)
+// Importações de Plugins Capacitor (NÃO usaremos .geocode)
 import { Geolocation } from '@capacitor/geolocation'; 
 
 
 // --------------------------------------------------------------------------
-// ★★★ AVISO IMPORTANTE: CHAVE DE API NECESSÁRIA! ★★★
-// O Geocoding do Capacitor é instável. Usaremos a API do Google Maps.
-// Substitua "SUA_CHAVE_AQUI" pela sua chave de API real do Google Maps.
-// Você precisa habilitar a 'Geocoding API' no seu projeto Google Cloud.
 const GOOGLE_MAPS_API_KEY = "AIzaSyA-PHske1BAsvZZbJDbR2953SlgS4BbGdI"; 
 // --------------------------------------------------------------------------
 
@@ -74,7 +70,6 @@ interface Coordinates {
   imports: [
     CommonModule, 
     FormsModule, 
-    // Certificando que todos os componentes Ionic estão aqui
     IonContent, 
     IonHeader, 
     IonTitle, 
@@ -170,7 +165,6 @@ export class BuscarEnderecoPage implements OnInit {
 
   /**
    * Função que busca as coordenadas de um endereço encontrado usando a API de Geocoding do Google Maps (HTTP).
-   * Resolve o problema de Geocoding não suportado.
    */
   async getCoordinatesForAddress() {
     if (!this.address) return;
@@ -213,7 +207,6 @@ export class BuscarEnderecoPage implements OnInit {
 
   /**
    * Função para Salvar Endereço (Firestore)
-   * Nenhuma lógica alterada aqui, apenas o uso dos dados já existentes.
    */
   async saveAddress() {
     if (!this.address) {

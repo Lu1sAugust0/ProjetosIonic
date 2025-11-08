@@ -206,7 +206,6 @@ export class EnderecosSalvosPage implements OnInit, OnDestroy {
   }
 
   /**
-    * FUNÇÃO DE DOWNLOAD INDIVIDUAL
     * Tenta salvar o arquivo TXT diretamente na pasta de Documents ou Downloads do celular.
     * @param address O objeto EnderecoSalvo a ser exportado.
     */
@@ -235,7 +234,7 @@ export class EnderecosSalvosPage implements OnInit, OnDestroy {
     } catch (e: any) {
       console.error('Erro ao salvar endereço diretamente:', e);
       
-      // 2. CORREÇÃO APLICADA: Aciona o Fallback de Compartilhamento para QUALQUER ERRO.
+      // Aciona o Fallback de Compartilhamento para QUALQUER ERRO.
       // Isso resolve o problema de erros de Permissão Genéricos que não ativam o IF anterior.
       await this.presentAlertWithShareFallback(address, content, fileName);
     }
