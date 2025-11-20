@@ -1,0 +1,30 @@
+/* profile.page.scss */
+.profile-info-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-info-item ion-icon {
+  margin-right: 15px;
+  min-width: 24px;
+}
+
+.profile-info-item ion-label {
+  flex-grow: 1;
+}
+
+.profile-info-item h2 {
+  margin: 0;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.profile-info-item p {
+  margin: 0;
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #333;
+}

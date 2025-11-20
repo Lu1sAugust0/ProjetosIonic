@@ -1,0 +1,57 @@
+/* Define a cor primária para o cabeçalho */
+  ion-toolbar[color="primary"] {
+    --background: var(--ion-color-primary);
+    --color: #ffffff;
+  }
+  
+  /* Estilo do Card principal de descrição */
+  .app-description-card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+  }
+
+  /* Estilo da Lista de funcionalidades */
+  ion-list {
+    background: var(--ion-background-color, #ffffff);
+  }
+  
+  /* Estilo para a seção do time */
+  .team-card {
+    --background: #f7f7f7;
+    border-left: 5px solid var(--ion-color-secondary);
+    border-radius: 12px;
+  }
+
+  /* Layout flexível para os membros do time */
+  .team-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 10px;
+  }
+  
+  .team-member {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .member-icon {
+    font-size: 2.2rem;
+    color: var(--ion-color-primary);
+    margin-right: 15px;
+  }
+  
+  .member-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .app-logo {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }

@@ -1,0 +1,88 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Feed de Receitas</ion-title>
+  </ion-toolbar>
+
+  <!-- Barra de Pesquisa em tempo real (debounce removido) -->
+  <ion-toolbar>
+    <ion-searchbar 
+      placeholder="Pesquisar receitas (Ex: Chicken, Beef)"
+      (ionInput)="handleSearch($event)" 
+      [debounce]="0" 
+      (ionSearch)="handleSearch($event)" 
+    ></ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  
+  <!-- Indicador de Carregamento Inicial -->
+  <ion-list *ngIf="isLoading && meals.length === 0">
+    <ion-item>
+      <ion-spinner slot="start" name="crescent"></ion-spinner>
+      <ion-label>Carregando receitas...</ion-label>
+    </ion-item>
+  </ion-list>
+  
+  <!-- Exibição do Feed de Receitas (Cards) -->
+  <ion-list>
+    
+    <ion-card *ngFor="let meal of meals; let i = index">
+      <!-- Exibe a imagem da receita -->
+      <img [src]="meal.strMealThumb" [alt]="meal.strMeal" />
+      <ion-card-header>
+        <ion-card-title>{{ meal.strMeal }}</ion-card-title>
+        <ion-card-subtitle>{{ meal.strArea }} ({{ meal.strCategory }})</ion-card-subtitle>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <!-- Mostra o início da instrução com um limite de 150 caracteres -->
+        <p>{{ meal.strInstructions | slice:0:150 }}...</p>
+        
+        <!-- Botão de Detalhes com navegação para a rota /receita/:id -->
+        <ion-button 
+          fill="solid" 
+          expand="full" 
+          color="primary" 
+          [routerLink]="['/receita', meal.idMeal]"
+        >
+          Ver Detalhes
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+    
+    <!-- Mensagem se não houver receitas -->
+    <!-- Se não estiver carregando e não houver receitas: -->
+    <ion-text class="ion-padding ion-text-center" *ngIf="meals.length === 0 && !isLoading">
+      <p>Nenhuma receita encontrada para o termo: <strong>{{ searchTerm || 'Busca Padrão' }}</strong></p>
+      <p *ngIf="searchTerm">Tente pesquisar por um termo mais genérico.</p>
+    </ion-text>
+    
+  </ion-list>
+
+  <!-- COMPONENTE DE ROLAGEM INFINITA -->
+  <!-- Desabilita a rolagem infinita se houver um termo de pesquisa específico ativo -->
+  <ion-infinite-scroll 
+    (ionInfinite)="loadData($event)" 
+    threshold="100px" 
+    [disabled]="currentSearchIndex >= searchTerms.length || searchTerm !== ''"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Carregando mais receitas..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  
+  <!-- Indicador de que todas as receitas foram carregadas -->
+  <ion-text 
+    class="ion-padding ion-text-center" 
+    *ngIf="currentSearchIndex >= searchTerms.length && searchTerm === ''"
+  >
+      <p>Você chegou ao final do feed.</p>
+  </ion-text>
+  
+</ion-content>

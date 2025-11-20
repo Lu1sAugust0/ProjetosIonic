@@ -1,0 +1,110 @@
+<ion-content [fullscreen]="true">
+
+  <!-- Indicador de Carregamento -->
+  <div *ngIf="isLoading" class="ion-text-center ion-padding">
+    <ion-spinner name="circles"></ion-spinner>
+    <p>Carregando detalhes...</p>
+  </div>
+
+  <!-- Exibição da Receita (quando carregada) -->
+  <div *ngIf="recipe && !isLoading">
+    
+    <!-- Imagem de Cabeçalho -->
+    <div class="header-image-container">
+      <!-- Imagem da Receita -->
+      <img [src]="recipe.strMealThumb" [alt]="recipe.strMeal" />
+    </div>
+    
+    <!-- Barra de Ferramentas Transparente (para o botão de voltar) -->
+    <ion-toolbar class="transparent-toolbar">
+      <ion-buttons slot="start">
+        <!-- O botão exibe o texto "Voltar" (estilo definido em SCSS) -->
+        <ion-button (click)="goBack()" color="light">
+          <strong>Voltar</strong>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+    <!-- NOVO: Cartão de Conteúdo Principal (Fundo Branco com Cantos Arredondados) -->
+    <div class="content-card">
+      
+      <!-- Título e Categoria -->
+      <div class="recipe-title-container">
+        <h1>{{ recipe.strMeal }}</h1>
+        <ion-note>{{ recipe.strArea }}</ion-note>
+      </div>
+      
+      <!-- Chips de Categoria e Área -->
+      <div class="recipe-chips">
+        <ion-chip color="primary">
+          <ion-icon name="restaurant" aria-hidden="true"></ion-icon>
+          <ion-label>{{ recipe.strCategory }}</ion-label>
+        </ion-chip>
+        <ion-chip color="secondary">
+          <ion-icon name="flag" aria-hidden="true"></ion-icon>
+          <ion-label>{{ recipe.strArea }}</ion-label>
+        </ion-chip>
+      </div>
+      
+      <!-- Seção de Ingredientes -->
+      <div class="section-header">
+        <div class="indicator-bar"></div>
+        <ion-label>Ingredientes</ion-label>
+      </div>
+      
+      <!-- AJUSTE: Mudei para uma lista UL/LI padrão para melhor controle de estilo -->
+      <div class="ingredients-list">
+        <ul>
+          <li *ngFor="let item of ingredients">
+            <div class="ingredient-line">
+              <!-- A medida é o primeiro span -->
+              <span>{{ item.measure }}</span>
+              <!-- O nome do ingrediente é o segundo span -->
+              <span>{{ item.name }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      
+      <!-- Seção de Modo de Preparo -->
+      <div class="section-header">
+        <div class="indicator-bar"></div>
+        <ion-label>Modo de Preparo</ion-label>
+      </div>
+      <div class="instructions-section">
+        <!-- Lista Ordenada para clareza dos passos -->
+        <ol>
+          <li *ngFor="let step of instructionSteps">
+            <p>{{ step }}</p>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Botões de Ação -->
+      <div class="video-button-container">
+        <ion-button expand="block" fill="solid" color="success" (click)="saveRecipeAsFile()">
+          <ion-icon slot="start" name="save"></ion-icon>
+          Salvar Receita Offline
+        </ion-button>
+      </div>
+      
+      <div *ngIf="recipe.strYoutube" class="video-button-container">
+        <ion-button expand="block" fill="outline" [href]="recipe.strYoutube" target="_blank">
+          <ion-icon slot="start" name="logo-youtube"></ion-icon>
+          Ver Vídeo de Preparo
+        </ion-button>
+      </div>
+
+    </div>
+    <!-- FIM do .content-card -->
+
+  </div>
+  
+  <!-- Mensagem de Erro/Não Encontrado -->
+  <div *ngIf="!recipe && !isLoading" class="error-message">
+    <h2>Ops!</h2>
+    <p>Receita não encontrada ou erro ao carregar os detalhes.</p>
+    <ion-button expand="block" (click)="goBack()">Voltar ao Feed</ion-button>
+  </div>
+  
+</ion-content>

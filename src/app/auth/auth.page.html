@@ -1,0 +1,103 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ mode === 'login' ? 'Login' : 'Criar Conta' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Vincula o template ao FormGroup com [formGroup]="authForm" -->
+  <form [formGroup]="authForm" (ngSubmit)="handleSubmit()">
+    
+    <ion-list class="ion-no-padding"> 
+      <!-- Campo Nome: Visível apenas no Cadastro, usando formControlName="name" -->
+      <ion-item *ngIf="mode === 'register'" fill="outline">
+        <ion-input label="Nome Completo" labelPlacement="floating" type="text" formControlName="name"></ion-input>
+      </ion-item>
+      <!-- Mensagem de erro para o campo nome (required) -->
+      <div *ngIf="isInvalid('name') && mode === 'register'" class="error-message">
+        Nome completo é obrigatório.
+      </div>
+
+      <!-- Campo E-mail: Usando formControlName="email" -->
+      <ion-item fill="outline">
+        <ion-input label="E-mail" labelPlacement="floating" type="email" formControlName="email"></ion-input>
+      </ion-item>
+      <!-- Mensagens de erro para o campo e-mail -->
+      <div *ngIf="isInvalid('email')" class="error-message">
+        <span *ngIf="authForm.get('email')?.hasError('required')">O e-mail é obrigatório.</span>
+        <span *ngIf="authForm.get('email')?.hasError('email')">Formato de e-mail inválido.</span>
+      </div>
+      
+      <!-- Campo Senha: Usando formControlName="password" -->
+      <ion-item fill="outline">
+        <ion-input label="Senha" labelPlacement="floating" type="password" formControlName="password"></ion-input>
+      </ion-item>
+      <!-- Mensagens de erro para o campo senha -->
+      <div *ngIf="isInvalid('password')" class="error-message">
+        <span *ngIf="authForm.get('password')?.hasError('required')">A senha é obrigatória.</span>
+        <span *ngIf="authForm.get('password')?.hasError('minlength')">A senha deve ter no mínimo 6 caracteres.</span>
+      </div>
+      
+      <!-- Campo Confirmar Senha: Visível apenas no Cadastro, usando formControlName="confirmPassword" -->
+      <ion-item *ngIf="mode === 'register'" fill="outline">
+        <ion-input label="Confirmar Senha" labelPlacement="floating" type="password" formControlName="confirmPassword"></ion-input>
+      </ion-item>
+      
+      <!-- Exibe erro de validação de senhas não coincidentes (validador de grupo) -->
+      <div *ngIf="authForm.hasError('passwordsDoNotMatch') && (authForm.get('password')?.touched || authForm.get('confirmPassword')?.touched)" class="error-message">
+          As senhas digitadas não coincidem.
+      </div>
+    </ion-list>
+
+    <!-- O botão é desabilitado automaticamente se o formulário for inválido [disabled]="authForm.invalid" -->
+    <ion-button expand="block" type="submit" [disabled]="authForm.invalid" class="ion-margin-top">
+      {{ mode === 'login' ? 'Entrar' : 'Cadastrar' }}
+    </ion-button>
+
+  </form>
+
+  <ion-button 
+    expand="block" 
+    fill="clear" 
+    class="ion-margin-top" 
+    *ngIf="mode === 'login'" 
+    (click)="forgotPassword()"
+  >
+    Esqueceu a senha?
+  </ion-button>
+
+  <ion-text class="ion-text-center ion-margin-top">
+    <p>
+      {{ mode === 'login' ? 'Não tem uma conta?' : 'Já tem uma conta?' }}
+      <a (click)="toggleMode()" class="toggle-link">
+        {{ mode === 'login' ? 'Cadastre-se' : 'Fazer Login' }}
+      </a>
+    </p>
+  </ion-text>
+
+</ion-content>
+
+<!-- Estilos CSS para melhor feedback visual e design -->
+<style>
+  /* Estilo para as mensagens de erro */
+  .error-message {
+    color: var(--ion-color-danger); /* Usa a cor de perigo padrão do Ionic */
+    font-size: 0.8em;
+    padding-left: 16px; /* Alinha com o conteúdo do item */
+    padding-bottom: 8px;
+    margin-top: -5px; /* Puxa para mais perto do input */
+  }
+
+  /* Estilo para o link de alternância */
+  .toggle-link {
+    font-weight: bold;
+    color: var(--ion-color-primary); /* Use uma cor de destaque para links */
+    cursor: pointer;
+    text-decoration: underline; /* Adiciona sublinhado para indicar que é clicável */
+  }
+
+  /* Aplica um pequeno margin-bottom em itens para dar espaço aos erros */
+  ion-list ion-item {
+    margin-bottom: 10px;
+  }
+</style>

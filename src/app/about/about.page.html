@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Sobre o Sabor App</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-card class="app-description-card ion-text-center">
+    <ion-card-header>
+      <img src="assets/img/sabor-app.png" alt="Logo do Sabor App" class="app-logo">
+      <ion-card-title>Sabor App</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>
+        Este aplicativo foi criado como Projeto Final da disciplina de Desenvolvimento de Aplicações Móveis.
+      </p>
+      <p>
+        O Aplicativo foi desenvolvido como uma solução prática para consulta de receitas, utilizando Ionic e Angular integrado a uma API pública. 
+        As receitas são carregadas dinamicamente para manter o conteúdo sempre atualizado.
+      </p>
+      <p>
+        O sistema utiliza o recurso de infinite scroll, permitindo que novas receitas sejam exibidas conforme o usuário rola a tela, 
+        garantindo uma navegação fluida e eficiente com apoio dos componentes nativos do Ionic.
+      </p>
+
+      <h3 class="ion-padding-top">Funcionalidades Principais</h3>
+      <ion-list lines="full" class="ion-no-padding">
+        <ion-item>
+          <ion-icon slot="start" name="search-outline" color="primary"></ion-icon>
+          <ion-label>Busca Avançada de Receitas (API TheMealDB)</ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon slot="start" name="cloud-offline-outline" color="secondary"></ion-icon>
+          <!-- 💡 Destaque a funcionalidade offline -->
+          <ion-label>
+            <strong>Modo Offline Completo:</strong> Salve suas receitas favoritas no perfil e acesse todos os detalhes (ingredientes, modo de preparo) mesmo sem internet. Perfeito para cozinhas com sinal fraco!
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Seção de Participantes do Grupo -->
+  <ion-card class="team-card ion-margin-top">
+    <ion-card-header class="ion-text-center">
+      <ion-card-title>Time de Desenvolvimento</ion-card-title>
+      <p class="ion-text-medium">Conheça as mentes por trás do Sabor App!</p>
+    </ion-card-header>
+
+    <ion-card-content class="team-list">
+      <!-- Item Participante 1 -->
+      <div class="team-member">
+        <ion-icon name="person-circle" class="member-icon"></ion-icon>
+        <ion-label class="member-name">Luis Augusto</ion-label>
+      </div>
+      <!-- Item Participante 2 -->
+      <div class="team-member">
+        <ion-icon name="person-circle" class="member-icon"></ion-icon>
+        <ion-label class="member-name">Rayane Gomes</ion-label>
+      </div>
+      <!-- Item Participante 3 -->
+      <div class="team-member">
+        <ion-icon name="person-circle" class="member-icon"></ion-icon>
+        <ion-label class="member-name">Mattheus Bueno</ion-label>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
+

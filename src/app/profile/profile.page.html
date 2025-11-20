@@ -1,0 +1,118 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <!-- Botão de Voltar para Home -->
+    <ion-buttons slot="start">
+      <ion-button (click)="goHome()">
+        <ion-icon name="arrow-back-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Meu Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <div class="ion-text-center">
+        <!-- ❗ NOVO: Container da Foto de Perfil (com estilos em profile.page.scss) -->
+        <div class="profile-picture-container">
+          <!-- Se houver photoURL, mostra a imagem -->
+          <img 
+            *ngIf="user.photoURL" 
+            [src]="user.photoURL" 
+            alt="Foto de Perfil"
+            class="profile-image"
+          />
+          <!-- Senão, mostra o ícone placeholder -->
+          <ion-icon 
+            *ngIf="!user.photoURL" 
+            name="person-circle" 
+            size="large" 
+            color="medium"
+            class="profile-placeholder"
+          ></ion-icon>
+
+          <!-- Input de arquivo OCULTO. O (#fileInput) é a referência local usada no botão abaixo. -->
+          <input 
+            type="file" 
+            #fileInput 
+            (change)="handleFileInput($event)" 
+            accept="image/png, image/jpeg" 
+            style="display: none;"
+          />
+          
+          <!-- Botão que aciona o input file. O click() simula o clique na galeria/câmera. -->
+          <ion-button 
+            (click)="fileInput.click()" 
+            fill="clear" 
+            size="small" 
+            class="edit-photo-button"
+            color="primary"
+          >
+            <ion-icon name="camera-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+        <!-- Fim do Container da Foto de Perfil -->
+
+        <ion-card-title class="ion-text-center ion-padding-top">Informações do Usuário</ion-card-title>
+      </div>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Informação de Nome -->
+      <div class="profile-info-item">
+        <ion-icon name="person-circle" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Nome</h2>
+          <p>{{ user.name }}</p>
+        </ion-label>
+        <ion-button fill="clear" size="small" (click)="editName()">
+            <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+
+      <!-- Informação de Email -->
+      <div class="profile-info-item">
+        <ion-icon name="mail-outline" slot="start"></ion-icon>
+        <ion-label>
+          <h2>Email Cadastrado</h2>
+          <p>{{ user.email }}</p>
+        </ion-label>
+        <ion-button fill="clear" size="small" disabled></ion-button> 
+      </div>
+
+      <!-- Botão para Alterar Senha -->
+      <ion-button 
+        expand="block" 
+        class="ion-margin-top" 
+        color="secondary"
+        (click)="editPassword()"
+      >
+        <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+        Alterar Senha
+      </ion-button>
+
+      <!-- Botão de Logout -->
+      <ion-button 
+        expand="block" 
+        class="ion-margin-top" 
+        color="tertiary"
+        (click)="logout()"
+      >
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        Sair (Logout)
+      </ion-button>
+
+      <!-- Botão de Excluir Conta (Ação Crítica) -->
+      <ion-button 
+        expand="block" 
+        class="ion-margin-top" 
+        color="danger"
+        (click)="confirmDeleteAccount()"
+      >
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        Excluir Conta
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

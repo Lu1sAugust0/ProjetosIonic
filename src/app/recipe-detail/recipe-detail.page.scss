@@ -1,0 +1,236 @@
+// Garante que o conteúdo role suavemente
+ion-content {
+  --background: var(--ion-color-light); // Um fundo levemente diferente para a página
+}
+
+// Estilo para a imagem de cabeçalho
+.header-image-container {
+  height: 250px; // Altura fixa para a imagem
+  overflow: hidden; // Esconde o que excede
+  position: relative; // Necessário para posicionar o título sobre a imagem
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; // Garante que a imagem cubra o container sem distorcer
+  }
+
+  // Overlay sutil sobre a imagem para ajudar na leitura do texto
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 50%, rgba(0,0,0,0.4) 100%);
+  }
+}
+
+// Container para o título da receita (AGORA DENTRO DO CARTÃO de CONTEÚDO)
+.recipe-title-container {
+  /* ESTILOS CORRIGIDOS PARA O TÍTULO NO FUNDO BRANCO */
+  position: static; /* Remove absolute positioning para que siga o fluxo do documento */
+  bottom: auto; 
+  left: auto; 
+  right: auto; 
+  
+  padding: 24px 16px 12px 16px; /* Ajusta o padding para o conteúdo */
+  color: var(--ion-color-dark); /* Texto ESCURO para o fundo claro */
+  z-index: 10; 
+
+  /* NOVO: Estilo para o h1 substituindo o ion-title */
+  h1 {
+    font-size: 1.8em; // Título grande
+    font-weight: bold;
+    line-height: 1.2;
+    padding: 0;
+    margin: 0;
+    color: var(--ion-color-dark); /* Cor escura */
+  }
+  
+  /* ion-note (usado para o nome da área/país) */
+  ion-note {
+    font-size: 0.9em;
+    color: var(--ion-color-medium); /* Cor média */
+    margin-top: 4px;
+    display: block;
+  }
+}
+
+// Estilo para a barra de topo com botão de voltar
+ion-toolbar {
+  &.transparent-toolbar {
+    --background: transparent;
+    --ion-color-base: transparent !important;
+    position: absolute; // Posiciona sobre a imagem
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 20; // Acima do título
+    padding-top: var(--ion-safe-area-top); // Para iOS com notch
+    
+    ion-button {
+      /* ATUALIZADO: Cor de fundo laranja forte (#FF5722) */
+      --background: #FF5722; 
+      --color: var(--ion-color-light); // Ícone/Texto claro
+      
+      /* ATUALIZADO: Aumentando o padding e o tamanho da fonte */
+      border-radius: 24px; // Levemente maior
+      width: auto; 
+      height: auto; 
+      padding: 10px 20px; // Padding maior
+      font-size: 1.1em; // Aumenta o tamanho da fonte
+      /* FIM DA ATUALIZAÇÃO */
+      
+      margin: 8px;
+    }
+    ion-title {
+      color: var(--ion-color-light); // Título na toolbar transparente (se houver)
+      font-size: 1.1em;
+    }
+  }
+}
+
+/* NOVO ESTILO: Container principal que sobrepõe a imagem */
+.content-card {
+  background: var(--ion-color-light); // Fundo branco
+  border-top-left-radius: 30px; // Cantos arredondados no topo
+  border-top-right-radius: 30px;
+  margin-top: -30px; // Subir 30px para sobrepor a imagem
+  position: relative; // Garante que esteja acima da imagem
+  padding-bottom: 30px; // Espaçamento inferior
+}
+
+// Estilos para os chips de categoria/área
+.recipe-chips {
+  padding: 0 16px; // ion-padding-horizontal
+  margin-top: 0; // Removido o margin-top negativo, pois o .content-card já faz a sobreposição
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap; 
+  
+  ion-chip {
+    --background: var(--ion-color-primary-tint); 
+    --color: var(--ion-color-primary-contrast); 
+    font-weight: 600;
+    padding: 8px 12px;
+    height: auto;
+    border-radius: 20px; 
+    
+    ion-icon {
+      font-size: 1em;
+      margin-inline-end: 6px;
+    }
+  }
+}
+
+// Estilo geral para cabeçalhos de seção (Ingredientes, Modo de Preparo)
+.section-header {
+  display: flex;
+  align-items: center;
+  margin: 24px 16px 16px 16px; // ion-margin-vertical, ion-padding-horizontal
+
+  .indicator-bar {
+    width: 6px; // A barrinha colorida
+    height: 24px; // Ajusta a altura da barrinha
+    background: var(--ion-color-tertiary); // Cor da barrinha
+    border-radius: 3px;
+    margin-inline-end: 12px;
+  }
+
+  ion-label {
+    font-size: 1.5em; // Título da seção grande
+    font-weight: bold;
+    color: var(--ion-color-dark);
+  }
+}
+
+/* NOVO: Estilos para a lista de ingredientes (UL/LI) */
+.ingredients-list {
+  padding: 0 16px; 
+  
+  ul {
+    list-style-type: disc; /* Bolinhas nativas */
+    padding-inline-start: 20px; /* Recuo para as bolinhas */
+    margin: 0;
+
+    li {
+      margin-bottom: 8px; /* Espaçamento entre os itens */
+      line-height: 1.4;
+      font-size: 0.95em; /* Fonte um pouco menor */
+      color: var(--ion-color-dark);
+      display: list-item; /* Garante que seja um item de lista */
+
+      .ingredient-line {
+        display: flex; /* Permite alinhar medida e nome na mesma linha */
+        justify-content: space-between; /* Espaço entre medida e nome */
+        padding-bottom: 4px;
+        /* IMPORTANTE: Remover a borda que criava a linha divisória */
+        /* border-bottom: 1px solid var(--ion-color-step-150, #d7d8da); */
+        
+        span:first-child { /* Medida */
+          font-weight: 500;
+          color: var(--ion-color-dark);
+          margin-inline-end: 8px;
+        }
+        span:last-child { /* Ingrediente */
+          font-weight: normal;
+          color: var(--ion-color-medium);
+          text-align: right;
+        }
+      }
+
+      /* Removendo a bolinha do elemento de lista nativo, para usar a bolinha nativa do UL/LI */
+      &::marker {
+        color: var(--ion-color-dark);
+        font-size: 1em;
+      }
+    }
+  }
+}
+
+// Estilos para o modo de preparo
+.instructions-section {
+  padding: 0 16px; 
+  margin-bottom: 40px; 
+
+  ol {
+    padding-inline-start: 20px; 
+    margin: 0;
+    list-style-type: decimal; 
+    
+    li {
+      margin-bottom: 16px; 
+      line-height: 1.5;
+      color: var(--ion-color-dark); 
+      font-size: 1.05em;
+
+      &::marker {
+        font-weight: bold;
+        color: var(--ion-color-tertiary); 
+        font-size: 1.1em;
+      }
+    }
+  }
+}
+
+// Estilo para o botão de vídeo, se existir
+.video-button-container {
+  padding: 0 16px; 
+  margin-top: 0; 
+  margin-bottom: 24px; 
+  
+  ion-button[fill="outline"] {
+    --color: var(--ion-color-secondary); 
+    --border-color: var(--ion-color-secondary); 
+    --background: transparent; 
+  }
+}
+
+// Mensagem de erro/não encontrado
+.error-message {
+  padding: 32px;
+  text-align: center;
+  color: var(--ion-color-medium);
+}
