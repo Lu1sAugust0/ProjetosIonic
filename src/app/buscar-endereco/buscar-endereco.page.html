@@ -70,34 +70,7 @@
         <ion-text slot="end">{{ address.localidade }} / {{ address.uf }}</ion-text>
       </ion-item>
 
-      <ion-item-divider class="ion-margin-top" [color]="coordinates ? 'success' : 'medium'"></ion-item-divider>
 
-      <!-- Detalhes das Coordenadas -->
-      <ion-card-title class="ion-text-center ion-padding-top ion-padding-bottom">
-        <ion-icon name="location-outline" color="dark"></ion-icon>
-        Geolocalização
-      </ion-card-title>
-
-      <!-- Exibição de Coordenadas Encontradas -->
-      <div *ngIf="coordinates">
-        <ion-item lines="none">
-          <ion-label>Latitude:</ion-label>
-          <ion-text slot="end">{{ coordinates.latitude }}</ion-text>
-        </ion-item>
-        <ion-item lines="none">
-          <ion-label>Longitude:</ion-label>
-          <ion-text slot="end">{{ coordinates.longitude }}</ion-text>
-        </ion-item>
-      </div>
-
-      <!-- Exibição de Erro de Geocoding (se aplicável) -->
-      <div *ngIf="geocodingError">
-        <ion-text color="danger">
-          <p class="ion-text-center ion-margin-top">
-            Atenção: {{ geocodingError }}
-          </p>
-        </ion-text>
-      </div>
       
       <!-- Botão para Salvar Endereço (Firestore) -->
       <ion-button 

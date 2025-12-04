@@ -139,7 +139,6 @@ export class BuscarEnderecoPage implements OnInit {
         this.address = null;
       } else {
         this.address = response;
-        await this.getCoordinatesForAddress();
       }
     } catch (error) {
       console.error('Erro ao buscar CEP:', error);
@@ -149,68 +148,7 @@ export class BuscarEnderecoPage implements OnInit {
     }
   }
 
-  /**
-   * Chama a API de Geocoding do Google para obter lat/lng do endereço.
-   */
-  async getCoordinatesForAddress() {
-    if (!this.address) return;
-
-    this.geocodingError = null;
-    const fullAddress = `${this.address.logradouro || ''}, ${this.address.bairro || ''}, ${this.address.localidade}, ${this.address.uf}, Brasil`;
-
-    try {
-      if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY.includes('AIzaSyDiK80LJa4_y42rA05XKt0ie8B8vwXo7lw') ) {
-  this.geocodingError = "Chave da Google Maps API não configurada. Coloque sua chave real em environment.ts.";
-  return;
-      }
-
-      const geocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fullAddress)}&key=${GOOGLE_MAPS_API_KEY}`;
-
-      const result: any = await firstValueFrom(this.http.get<any>(geocodingUrl));
-      console.log('Geocoding result:', result);
-
-      if (result.status === 'OK' && result.results && result.results.length > 0) {
-        const loc = result.results[0].geometry.location;
-        this.coordinates = { latitude: loc.lat, longitude: loc.lng };
-      } else {
-        this.coordinates = null;
-        this.geocodingError = `Coordenadas não encontradas (Status: ${result.status}).`;
-      }
-    } catch (e) {
-      console.error('Erro no Geocoding:', e);
-      this.coordinates = null;
-      this.geocodingError = 'Erro ao buscar coordenadas. Verifique a chave da API e a conexão.';
-    }
-  }
-
-  /**
-   * URL do Static Maps (imagem)
-   */
-  get staticMapUrl(): string | null {
-    if (!this.coordinates) return null;
-    const lat = this.coordinates.latitude;
-    const lng = this.coordinates.longitude;
-    const zoom = 16;
-    const size = '600x300'; // ajustar se desejar
-    const marker = `color:red|label:A|${lat},${lng}`;
-    return `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lng}&zoom=${zoom}&size=${size}&markers=${encodeURIComponent(marker)}&key=${GOOGLE_MAPS_API_KEY}`;
-  }
-
-  /**
-   * Abre o local no Google Maps (app ou navegador)
-   */
-  async openInGoogleMaps() {
-    if (!this.coordinates) return;
-    const { latitude, longitude } = this.coordinates;
-    const url = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
-    try {
-      await Browser.open({ url });
-    } catch (e) {
-      console.warn('Erro ao abrir Browser plugin, abrindo fallback:', e);
-      window.open(url, '_blank');
-    }
-  }
-
+ 
   /**
    * Salva o endereço no Firestore (incluindo coordenadas se existirem)
    */
